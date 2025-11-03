@@ -1,26 +1,38 @@
 name: Parkalot Auto Reserve
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:     # umożliwia ręczne uruchomienie
   schedule:
-    - cron: '1 0 * * *'  # codziennie o północy UTC (możesz dostosować czas)
+    - cron: '1 0 * * *'  # codziennie o północy UTC
 
 jobs:
   reserve:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setup Node.js
+      - name: 🧩 Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install parkalot-auto-reserve
-        run: npm install -g https://github.com/snypelife/parkalot-auto-reserve.git
+      - name: 📦 Install parkalot-auto-reserve
+        run: |
+          echo "Instaluję pakiet parkalot-auto-reserve..."
+          npm install -g https://github.com/snypelife/parkalot-auto-reserve.git
+          echo "✅ Instalacja zakończona."
 
-      - name: Run reservation
+      - name: 🚗 Run reservation
         env:
           PARKALOT_USERNAME: ${{ secrets.PARKALOT_USERNAME }}
           PARKALOT_PASSWORD: ${{ secrets.PARKALOT_PASSWORD }}
         run: |
-          parkalot-reserve --username $PARKALOT_USERNAME --password $PARKALOT_PASSWORD
+          echo "🕒 Start rezerwacji: $(date)"
+          echo "Loguję się jako: $PARKALOT_USERNAME"
+          parkalot-reserve --username "$PARKALOT_USERNAME" --password "$PARKALOT_PASSWORD"
+          STATUS=$?
+          if [ $STATUS -eq 0 ]; then
+            echo "✅ Rezerwacja zakończona pomyślnie!"
+          else
+            echo "❌ Błąd podczas rezerwacji (kod wyjścia: $STATUS)"
+          fi
+          echo "🏁 Koniec procesu: $(date)"

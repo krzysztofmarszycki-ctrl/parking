@@ -3,7 +3,7 @@ name: Parkalot Auto Reserve
 on:
   workflow_dispatch:     # umożliwia ręczne uruchomienie
   schedule:
-    - cron: '1 0 * * *'  # codziennie o północy UTC
+    - cron: '2 23 * * *'  # codziennie o północy UTC
 
 jobs:
   reserve:

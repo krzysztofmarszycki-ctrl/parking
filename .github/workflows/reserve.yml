@@ -2,7 +2,7 @@ name: Parkalot Auto Reserve
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # codziennie o północy UTC (możesz dostosować czas)
+    - cron: '1 0 * * *'  # codziennie o północy UTC (możesz dostosować czas)
 
 jobs:
   reserve:

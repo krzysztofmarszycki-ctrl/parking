@@ -1,6 +1,7 @@
 name: Parkalot Auto Reserve
 
 on:
+workflow_dispatch:
   schedule:
     - cron: '1 0 * * *'  # codziennie o północy UTC (możesz dostosować czas)
 

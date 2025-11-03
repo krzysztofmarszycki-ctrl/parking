@@ -1,0 +1,25 @@
+name: Parkalot Auto Reserve
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # codziennie o północy UTC (możesz dostosować czas)
+
+jobs:
+  reserve:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install parkalot-auto-reserve
+        run: npm install -g https://github.com/snypelife/parkalot-auto-reserve.git
+
+      - name: Run reservation
+        env:
+          PARKALOT_USERNAME: ${{ secrets.PARKALOT_USERNAME }}
+          PARKALOT_PASSWORD: ${{ secrets.PARKALOT_PASSWORD }}
+        run: |
+          parkalot-reserve --username $PARKALOT_USERNAME --password $PARKALOT_PASSWORD
